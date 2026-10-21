@@ -1,0 +1,15 @@
+{
+  "name": "atmos-weather-dashboard",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Global weather monitoring dashboard for radar, warnings, outlooks, models, satellite imagery, and service health.",
+  "scripts": {
+    "dev": "node dev-server.mjs",
+    "build": "node build.mjs",
+    "preview": "node preview.mjs"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}

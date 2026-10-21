@@ -1,0 +1,20 @@
+VERCEL HOBBY FUNCTION-LIMIT FIX
+================================
+
+The previous deployment failed because 16 individual files in api/ each became a Vercel Function, exceeding the project's Hobby-plan limit.
+
+This version uses one file in api/: [route].js. It dispatches all existing /api/<name> endpoints to handler modules in lib/api-handlers/.
+
+IMPORTANT WHEN REPLACING THE OLD PROJECT:
+- Replace the project files rather than merging into the old folder.
+- The api/ folder must contain ONLY [route].js.
+- Delete the previous individual api/*.js files (status.js, spc-outlook.js, etc.) if they remain. If they remain, Vercel will continue generating too many functions.
+- Keep the files in lib/api-handlers/; do not move them back into api/.
+
+Vercel Settings:
+- Framework Preset: Other
+- Build Command: npm run build
+- Output Directory: dist
+- Root Directory: .
+
+Validated locally: JavaScript syntax checks passed, the API dispatcher import/smoke test passed, all 16 handlers load, and npm run build succeeds.

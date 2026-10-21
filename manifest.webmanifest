@@ -1,0 +1,14 @@
+{
+  "id": "/",
+  "name": "Atmos Weather Intelligence",
+  "short_name": "Atmos",
+  "description": "Weather radar, warnings, model guidance, and outlooks.",
+  "start_url": "/index.html#overview",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#10141b",
+  "theme_color": "#10141b",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

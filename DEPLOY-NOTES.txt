@@ -1,0 +1,9 @@
+Atmos Weather Intelligence — deployment notes
+
+Deploy this repository root to Vercel. Build command: npm run build. Output directory: dist. Node.js 20.19+.
+Only api/[route].js should be a file directly inside api/. It dispatches the existing /api/<name> paths to handler modules in lib/api-handlers/. This keeps the deployment at one Vercel Function and avoids the Hobby plan's 12-function deployment cap. Do not restore the individual handler files inside api/.
+No API keys are required for the weather data sources currently integrated.
+
+Global coverage is provider-dependent. North American warnings use NWS/ECCC; Europe uses configured MeteoAlarm feeds; Australia uses BOM warning RSS. For Asia, New Zealand, Pacific islands and other areas, use the dashboard's GDACS/WMO links and national agency sources; GDACS is not a complete local severe-weather warning feed. Browser notifications only operate while the dashboard is open unless you separately configure a push backend.
+
+Safety notice shown in the website: "This website was made with ChatGPT. Expect errors." Always verify active warnings using the issuing official agency.

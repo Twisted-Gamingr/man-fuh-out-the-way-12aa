@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10141b" />
+    <meta name="description" content="A live weather operations dashboard for radar, warnings, outlooks, models, and satellite imagery." />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Atmos — Weather intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="styles.css?v=20261021-global-1" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#overview" aria-label="Atmos home">
+          <span class="brand-mark"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3.5 30 27H4L17 3.5Z"/><path d="m17 11-8.5 15h17L17 11Z" class="brand-cut"/></svg></span>
+          <span class="brand-copy"><strong>ATMOS</strong><small>WEATHER INTELLIGENCE</small></span>
+        </a>
+
+        <div class="workspace-chip"><span class="pulse-dot"></span><span>LIVE DESK</span><span class="chip-time" id="utc-clock">—</span></div>
+        <div class="nav-label">MONITOR</div>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#overview" data-page="overview"><span class="nav-icon">◫</span><span>Overview</span></a>
+          <a class="nav-link" href="#radar" data-page="radar"><span class="nav-icon">◎</span><span>Radar</span><span class="nav-badge live-badge">LIVE</span></a>
+          <a class="nav-link" href="#alerts" data-page="alerts"><span class="nav-icon">♧</span><span>Warnings</span><span class="nav-count" id="nav-alert-count">—</span></a>
+          <a class="nav-link" href="#outlooks" data-page="outlooks"><span class="nav-icon">⌁</span><span>SPC outlooks</span></a>
+          <a class="nav-link" href="#models" data-page="models"><span class="nav-icon">⌘</span><span>Models</span></a>
+          <a class="nav-link" href="#satellite" data-page="satellite"><span class="nav-icon">◉</span><span>Satellite</span></a>
+          <a class="nav-link" href="#cameras" data-page="cameras"><span class="nav-icon">▣</span><span>Road cameras</span></a>
+          <a class="nav-link" href="#reports" data-page="reports"><span class="nav-icon">⌖</span><span>Storm reports</span></a>
+          <a class="nav-link" href="#creators" data-page="creators"><span class="nav-icon">▶</span><span>Weather creators</span></a>
+          <a class="nav-link" href="#status" data-page="status"><span class="nav-icon">◉</span><span>Service status</span></a>
+        </nav>
+
+        <div class="nav-label nav-label-tools">YOUR TOOLS</div>
+        <nav class="main-nav" aria-label="Personal tools">
+          <a class="nav-link" href="#music" data-page="music"><span class="nav-icon">♫</span><span>Music</span></a>
+          <a class="nav-link" href="#social" data-page="social"><span class="nav-icon">↗</span><span>Social studio</span></a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="outline-control">
+            <div class="outline-heading"><span>ACCENT COLOR</span><span class="mono">CUSTOM</span></div>
+            <div class="swatches" role="group" aria-label="Choose accent color">
+              <button class="swatch selected" data-accent="#d1f477" style="--swatch:#d1f477" aria-label="Lime accent"></button>
+              <button class="swatch" data-accent="#83c8ff" style="--swatch:#83c8ff" aria-label="Blue accent"></button>
+              <button class="swatch" data-accent="#ffb078" style="--swatch:#ffb078" aria-label="Orange accent"></button>
+              <button class="swatch" data-accent="#c6a8ff" style="--swatch:#c6a8ff" aria-label="Violet accent"></button>
+              <label class="swatch swatch-custom" title="Choose custom accent"><input id="custom-accent" type="color" value="#d1f477" aria-label="Custom accent color"/><span>＋</span></label>
+            </div>
+          </div>
+          <div class="theme-control" role="group" aria-label="Choose theme">
+            <button class="theme-option" data-theme="light" title="Bright" aria-label="Bright theme">☼</button>
+            <button class="theme-option selected" data-theme="dark" title="Dark" aria-label="Dark theme">◐</button>
+            <button class="theme-option" data-theme="oled" title="OLED black" aria-label="OLED black theme">◒</button>
+            <button class="theme-option" data-theme="storm" title="Storm room" aria-label="Storm room theme">ϟ</button>
+            <button class="theme-option" data-theme="ocean" title="Ocean blue" aria-label="Ocean blue theme">≈</button>
+            <button class="theme-option" data-theme="forest" title="Forest" aria-label="Forest theme">♧</button>
+            <button class="theme-option" data-theme="ember" title="Ember" aria-label="Ember theme">✦</button>
+            <button class="theme-option" data-theme="violet" title="Violet" aria-label="Violet theme">✧</button>
+          </div>
+          <div class="profile-row"><div class="avatar">A</div><div class="profile-name"><strong>Weather desk</strong><small>Personal workspace</small></div><button class="icon-button settings-open" aria-label="Open settings">⚙</button></div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="mobile-menu icon-button" id="mobile-menu" aria-label="Open menu">☰</button>
+          <div class="crumbs"><span>ATMOS</span><span class="crumb-divider">/</span><strong id="page-crumb">OVERVIEW</strong></div>
+          <div class="topbar-actions">
+            <label class="location-search"><span class="search-icon">⌕</span><input id="location-input" type="search" value="World overview" placeholder="Search a place…" autocomplete="off"/><button id="location-search-button" aria-label="Search location">↵</button><span class="search-shortcut">ENTER</span><div class="search-results" id="search-results" hidden></div></label>
+            <button class="top-action" id="use-location" title="Use my location" aria-label="Use my location">⌖</button>
+            <button class="top-action notification-action" id="notifications-open" title="Notification settings" aria-label="Notification settings">♧<i></i></button>
+          </div>
+        </header>
+        <div class="page-content" id="page-content"></div>
+        <footer class="site-disclaimer">This website was made with ChatGPT. Expect errors. <span>Always follow your official meteorological service and emergency responders.</span></footer>
+      </main>
+      <aside id="background-music-dock" class="background-music-dock" hidden aria-label="Background music player">
+        <div class="background-music-head"><span class="background-music-label">♫ MUSIC FOLLOWS YOU</span><span class="background-music-provider" id="background-music-provider">PLAYER</span><button class="background-music-close" type="button" data-action="stop-background-music" aria-label="Stop background music">×</button></div>
+        <div class="background-music-content" id="background-music-content"></div>
+      </aside>
+      <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+      <div class="modal-backdrop" id="modal-backdrop" hidden><section class="modal-card" id="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title"></section></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script type="module" src="./app.js?v=20261021-global-1"></script>
+  </body>
+</html>
